@@ -20,7 +20,13 @@ CREATE TABLE IF NOT EXISTS boards (
 );
 `);
 
-const defaults = ["user1", "user2", "user3", "user4", "user5"];
+const defaults = [
+  ["user1", "1111"],
+  ["user2", "2222"],
+  ["user3", "3333"],
+  ["user4", "4444"],
+  ["user5", "5555"],
+];
 const insert = db.prepare("INSERT OR IGNORE INTO users (username, password, token) VALUES (?, ?, NULL)");
-for (const username of defaults) insert.run(username, "1234");
-console.log("기본 사용자 5개 생성 완료: user1 ~ user5 / 비밀번호 1234");
+for (const [username, password] of defaults) insert.run(username, password);
+console.log("기본 사용자 생성 완료: user1~user5 / 비밀번호 1111~5555");

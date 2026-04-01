@@ -111,6 +111,16 @@ app.put("/api/board", auth, (req, res) => {
   res.json({ ok: true });
 });
 
+
+app.post("/api/change-password", auth, (req, res) => {
+  const { newPassword } = req.body || {};
+  if (!/^\d{4}$/.test(String(newPassword || ""))) {
+    return res.status(400).send("비밀번호는 숫자 4자리여야 합니다.");
+  }
+  db.prepare("UPDATE users SET password = ? WHERE id = ?").run(String(newPassword), req.user.id);
+  res.json({ ok: true });
+});
+
 app.post("/api/board/new", auth, (req, res) => {
   const board = createBoard();
   db.prepare(`UPDATE boards SET board_json = ?, history_json = ?, last_opened_json = ?, updated_at = ? WHERE user_id = ?`)
