@@ -30,9 +30,9 @@ CREATE TABLE IF NOT EXISTS boards (
 const PRIZES = [
   { name: "1등", count: 1 },
   { name: "2등", count: 3 },
-  { name: "3등", count: 6 },
-  { name: "4등", count: 20 },
-  { name: "5등", count: 30 },
+  { name: "3등", count: 16 },
+  { name: "4등", count: 100 },
+  { name: "5등", count: 400 },
 ];
 const TOTAL_CELLS = 520;
 
@@ -54,9 +54,8 @@ function createBoard() {
       idx += 1;
     }
   }
-  while (raw.length < TOTAL_CELLS) {
-    raw.push({ drawId: idx, result: "", opened: false });
-    idx += 1;
+  if (raw.length !== TOTAL_CELLS) {
+    throw new Error(`PRIZES total must equal ${TOTAL_CELLS}, current total is ${raw.length}`);
   }
   return shuffle(raw).map((item, index) => ({ ...item, slot: index + 1 }));
 }
